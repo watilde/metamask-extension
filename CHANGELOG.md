@@ -2,6 +2,10 @@
 
 ## Current Master
 
+## 4.0.0 2017-9-28
+
+- Merge New UI with master to become UAT branch.
+
 ## 3.10.8 2017-9-28
 
 - Fixed usage of new currency fetching API.
