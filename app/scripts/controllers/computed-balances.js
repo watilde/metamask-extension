@@ -20,7 +20,7 @@ class ComputedbalancesController {
   }
 
   updateAllBalances () {
-    for (let address in this.accountTracker.store.getState().accounts) {
+    for (const address in this.accountTracker.store.getState().accounts) {
       this.balances[address].updateBalance()
     }
   }
@@ -31,10 +31,10 @@ class ComputedbalancesController {
     this.accountTracker.store.subscribe(this.addAnyAccountsFromStore.bind(this))
   }
 
-  addAnyAccountsFromStore(store) {
+  addAnyAccountsFromStore (store) {
     const balances = store.accounts
 
-    for (let address in balances) {
+    for (const address in balances) {
       this.trackAddressIfNotAlready(address)
     }
   }
@@ -47,14 +47,14 @@ class ComputedbalancesController {
   }
 
   trackAddress (address) {
-    let updater = new BalanceController({
+    const updater = new BalanceController({
       address,
       accountTracker: this.accountTracker,
       txController: this.txController,
       blockTracker: this.blockTracker,
     })
     updater.store.subscribe((accountBalance) => {
-      let newState = this.store.getState()
+      const newState = this.store.getState()
       newState.computedBalances[address] = accountBalance
       this.store.updateState(newState)
     })

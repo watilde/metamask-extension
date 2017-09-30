@@ -65,6 +65,6 @@ AccountDetailsModal.prototype.render = function () {
           showExportPrivateKeyModal()
         },
       }, [ 'Export private key' ]),
-      
+
   ])
 }

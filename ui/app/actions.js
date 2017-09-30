@@ -368,7 +368,7 @@ function addNewAccount () {
         forceUpdateMetamaskState(dispatch)
         return resolve(newAccountAddress)
       })
-    });
+    })
   }
 }
 
@@ -1011,7 +1011,7 @@ function exportAccount (password, address) {
   }
 }
 
-function exportAccountComplete() {
+function exportAccountComplete () {
   return {
     type: actions.EXPORT_ACCOUNT,
   }

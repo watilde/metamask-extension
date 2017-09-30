@@ -44,10 +44,10 @@ const toBigNumber = {
   BN: n => new BigNumber(n.toString(16), 16),
 }
 const toNormalizedDenomination = {
-  WEI: bigNumber => bigNumber.div(BIG_NUMBER_WEI_MULTIPLIER)
+  WEI: bigNumber => bigNumber.div(BIG_NUMBER_WEI_MULTIPLIER),
 }
 const toSpecifiedDenomination = {
-  WEI: bigNumber => bigNumber.times(BIG_NUMBER_WEI_MULTIPLIER).round()
+  WEI: bigNumber => bigNumber.times(BIG_NUMBER_WEI_MULTIPLIER).round(),
 }
 const baseChange = {
   hex: n => n.toString(16),
@@ -89,7 +89,7 @@ const converter = R.pipe(
   whenPredSetWithPropAndSetter(R.prop('numberOfDecimals'), 'numberOfDecimals', round),
   whenPropApplySetterMap('toNumericBase', baseChange),
   R.view(R.lensProp('value'))
-);
+)
 
 const conversionUtil = (value, {
   fromCurrency = null,
@@ -112,10 +112,10 @@ const conversionUtil = (value, {
   conversionRate,
   ethToUSDRate,
   value,
-});
+})
 
 const addCurrencies = (a, b, { toNumericBase, numberOfDecimals }) => {
-  const value = (new BigNumber(a)).add(b);
+  const value = (new BigNumber(a)).add(b)
   return converter({
     value,
     toNumericBase,

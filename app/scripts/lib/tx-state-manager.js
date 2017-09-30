@@ -85,7 +85,7 @@ module.exports = class TransactionStateManger extends EventEmitter {
   updateTx (txMeta) {
     if (txMeta.txParams) {
       Object.keys(txMeta.txParams).forEach((key) => {
-        let value = txMeta.txParams[key]
+        const value = txMeta.txParams[key]
         if (typeof value !== 'string') console.error(`${key}: ${value} in txParams is not a string`)
         if (!ethUtil.isHexPrefixed(value)) console.error('is not hex prefixed, anything on txParams must be hex prefixed')
       })

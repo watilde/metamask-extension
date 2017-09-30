@@ -36,7 +36,7 @@ function NewAccountModal () {
   Component.call(this)
 
   this.state = {
-    newAccountName: ''
+    newAccountName: '',
   }
 }
 
@@ -63,7 +63,7 @@ NewAccountModal.prototype.render = function () {
       h('div.new-account-input-wrapper', {}, [
         h('input.new-account-input', {
           placeholder: 'E.g. My new account',
-          onChange: (event) => this.setState({ newAccountName: event.target.value })
+          onChange: (event) => this.setState({ newAccountName: event.target.value }),
         }, []),
       ]),
 
@@ -77,7 +77,7 @@ NewAccountModal.prototype.render = function () {
 
       h('div.new-account-modal-content.button', {}, [
         h('button.btn-clear', {
-          onClick: () => this.props.createAccount(newAccountName)
+          onClick: () => this.props.createAccount(newAccountName),
         }, [
           'SAVE',
         ]),

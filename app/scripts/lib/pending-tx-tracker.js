@@ -78,15 +78,15 @@ module.exports = class PendingTransactionTracker extends EventEmitter {
       const errorMessage = err.message.toLowerCase()
       const isKnownTx = (
         // geth
-        errorMessage.includes('replacement transaction underpriced')
-        || errorMessage.includes('known transaction')
+        errorMessage.includes('replacement transaction underpriced') ||
+        errorMessage.includes('known transaction') ||
         // parity
-        || errorMessage.includes('gas price too low to replace')
-        || errorMessage.includes('transaction with the same hash was already imported')
+        errorMessage.includes('gas price too low to replace') ||
+        errorMessage.includes('transaction with the same hash was already imported') ||
         // other
-        || errorMessage.includes('gateway timeout')
-        || errorMessage.includes('nonce too low')
-        || txMeta.retryCount > 1
+        errorMessage.includes('gateway timeout') ||
+        errorMessage.includes('nonce too low') ||
+        txMeta.retryCount > 1
       )
       // ignore resubmit warnings, return early
       if (isKnownTx) return

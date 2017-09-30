@@ -45,7 +45,7 @@ WalletView.prototype.renderWalletBalance = function () {
     selectedAccount,
     unsetSelectedToken,
     hideSidebar,
-    sidebarOpen
+    sidebarOpen,
   } = this.props
   const selectedClass = selectedTokenAddress
     ? ''

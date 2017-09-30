@@ -19,7 +19,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    showConfTxPage: ({ id }) => dispatch(showConfTxPage({ id }))
+    showConfTxPage: ({ id }) => dispatch(showConfTxPage({ id })),
   }
 }
 

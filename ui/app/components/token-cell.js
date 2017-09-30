@@ -58,15 +58,15 @@ TokenCell.prototype.render = function () {
     sidebarOpen,
     // userAddress,
   } = props
-  
-  const pair = `${symbol.toLowerCase()}_eth`;
 
-  let currentTokenToEthRate;
-  let currentTokenInUSD;
+  const pair = `${symbol.toLowerCase()}_eth`
+
+  let currentTokenToEthRate
+  let currentTokenInUSD
   let formattedUSD = ''
 
   if (tokenExchangeRates[pair]) {
-    currentTokenToEthRate = tokenExchangeRates[pair].rate;
+    currentTokenToEthRate = tokenExchangeRates[pair].rate
     currentTokenInUSD = conversionUtil(string, {
       fromNumericBase: 'dec',
       fromCurrency: symbol,
@@ -75,9 +75,9 @@ TokenCell.prototype.render = function () {
       conversionRate: currentTokenToEthRate,
       ethToUSDRate,
     })
-    formattedUSD = `$${currentTokenInUSD} USD`;
+    formattedUSD = `$${currentTokenInUSD} USD`
   }
- 
+
   return (
     h('div.token-list-item', {
       className: `token-list-item ${selectedTokenAddress === address ? 'token-list-item--active' : ''}`,

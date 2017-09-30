@@ -182,6 +182,6 @@ TxListItem.prototype.render = function () {
 
         ]),
       ]),
-    ]) // holding on icon from design
+    ]), // holding on icon from design
   ])
 }

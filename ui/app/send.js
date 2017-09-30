@@ -70,11 +70,11 @@ function SendTransactionScreen () {
       amountToSend: '0x0',
       gasPrice: null,
       gas: null,
-      amount: '0x0', 
+      amount: '0x0',
       txData: null,
       memo: '',
     },
-    activeCurrency: 'USD', 
+    activeCurrency: 'USD',
     tooltipIsOpen: false,
     errors: {},
     isValid: false,
@@ -121,9 +121,9 @@ SendTransactionScreen.prototype.componentWillMount = function () {
   })
 }
 
-SendTransactionScreen.prototype.renderErrorMessage = function(errorType, warning) {
+SendTransactionScreen.prototype.renderErrorMessage = function (errorType, warning) {
   const { errors } = this.state
-  const errorMessage = errors[errorType];
+  const errorMessage = errors[errorType]
 
   return errorMessage || warning
     ? h('div.send-screen-input-wrapper__error-message', [ errorMessage || warning ])
@@ -492,11 +492,11 @@ SendTransactionScreen.prototype.setErrorsFor = function (field) {
 
   const {
     isValid,
-    errors: newErrors
+    errors: newErrors,
   } = this.validate(balance, amountToSend, newTx)
 
   const nextErrors = Object.assign({}, previousErrors, {
-    [field]: newErrors[field] || null
+    [field]: newErrors[field] || null,
   })
 
   if (!isValid) {
@@ -510,7 +510,7 @@ SendTransactionScreen.prototype.setErrorsFor = function (field) {
 SendTransactionScreen.prototype.clearErrorsFor = function (field) {
   const { errors: previousErrors } = this.state
   const nextErrors = Object.assign({}, previousErrors, {
-    [field]: null
+    [field]: null,
   })
 
   this.setState({
