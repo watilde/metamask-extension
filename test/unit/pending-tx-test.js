@@ -5,6 +5,8 @@ const ObservableStore = require('obs-store')
 const clone = require('clone')
 const { createStubedProvider } = require('../stub/provider')
 const PendingTransactionTracker = require('../../app/scripts/lib/pending-tx-tracker')
+const MockTxGen = require('../lib/mock-tx-gen')
+const sinon = require('sinon')
 const noop = () => true
 const currentNetworkId = 42
 const otherNetworkId = 36
@@ -46,7 +48,57 @@ describe('PendingTransactionTracker', function () {
         }
       },
       getPendingTransactions: () => {return []},
+      getCompletedTransactions: () => {return []},
       publishTransaction: () => {},
+    })
+  })
+
+  describe('_checkPendingTx state management', function () {
+    let stub
+
+    afterEach(function () {
+      if (stub) {
+        stub.restore()
+      }
+    })
+
+    it('should become failed if another tx with the same nonce succeeds', async function () {
+
+      // SETUP
+      const txGen = new MockTxGen()
+
+      txGen.generate({
+        id: '456',
+        value: '0x01',
+        hash: '0xbad',
+        status: 'confirmed',
+        nonce: '0x01',
+      }, { count: 1 })
+
+      const pending = txGen.generate({
+        id: '123',
+        value: '0x02',
+        hash: '0xfad',
+        status: 'submitted',
+        nonce: '0x01',
+      }, { count: 1 })[0]
+
+      stub = sinon.stub(pendingTxTracker, 'getCompletedTransactions')
+      .returns(txGen.txs)
+
+      // THE EXPECTATION
+      const spy = sinon.spy()
+      pendingTxTracker.on('tx:failed', (txId, err) => {
+        assert.equal(txId, pending.id, 'should fail the pending tx')
+        assert.equal(err.name, 'NonceTakenErr', 'should emit a nonce taken error.')
+        spy(txId, err)
+      })
+
+      // THE METHOD
+      await pendingTxTracker._checkPendingTx(pending)
+
+      // THE ASSERTION
+      assert.ok(spy.calledWith(pending.id), 'tx failed should be emitted')
     })
   })
 
@@ -57,7 +109,7 @@ describe('PendingTransactionTracker', function () {
       const block = Proxy.revocable({}, {}).revoke()
       pendingTxTracker.checkForTxInBlock(block)
     })
-    it('should emit \'txFailed\' if the txMeta does not have a hash', function (done) {
+    it('should emit \'tx:failed\' if the txMeta does not have a hash', function (done) {
       const block = Proxy.revocable({}, {}).revoke()
       pendingTxTracker.getPendingTransactions = () => [txMetaNoHash]
       pendingTxTracker.once('tx:failed', (txId, err) => {
@@ -105,7 +157,7 @@ describe('PendingTransactionTracker', function () {
   })
 
   describe('#_checkPendingTx', function () {
-    it('should emit \'txFailed\' if the txMeta does not have a hash', function (done) {
+    it('should emit \'tx:failed\' if the txMeta does not have a hash', function (done) {
       pendingTxTracker.once('tx:failed', (txId, err) => {
         assert(txId, txMetaNoHash.id, 'should pass txId')
         done()
@@ -172,7 +224,7 @@ describe('PendingTransactionTracker', function () {
       .catch(done)
       pendingTxTracker.resubmitPendingTxs()
     })
-    it('should not emit \'txFailed\' if the txMeta throws a known txError', function (done) {
+    it('should not emit \'tx:failed\' if the txMeta throws a known txError', function (done) {
       knownErrors =[
         // geth
         '     Replacement transaction Underpriced            ',
@@ -199,8 +251,15 @@ describe('PendingTransactionTracker', function () {
 
       pendingTxTracker.resubmitPendingTxs()
     })
-    it('should emit \'txFailed\' if it encountered a real error', function (done) {
-      pendingTxTracker.once('tx:failed', (id, err) => err.message === 'im some real error' ? txList[id - 1].resolve() : done(err))
+    it('should emit \'tx:warning\' if it encountered a real error', function (done) {
+      pendingTxTracker.once('tx:warning', (txMeta, err) => {
+        if (err.message === 'im some real error') {
+          const matchingTx = txList.find(tx => tx.id === txMeta.id)
+          matchingTx.resolve()
+        } else {
+          done(err)
+        }
+      })
 
       pendingTxTracker.getPendingTransactions = () => txList
       pendingTxTracker._resubmitTx = async (tx) => { throw new TypeError('im some real error') }
