@@ -96,11 +96,11 @@ ConfigScreen.prototype.render = function () {
 
           h('hr.horizontal-line'),
 
-          h('div', {
-            style: {
-              marginTop: '20px',
-            },
-          }, [
+          currentIdenticonGeneratorInformation(metamaskState, state),
+
+          h('hr.horizontal-line'),
+
+          h('div', [
             h('p', {
               style: {
                 fontFamily: 'Montserrat Light',
@@ -126,11 +126,7 @@ ConfigScreen.prototype.render = function () {
 
           h('hr.horizontal-line'),
 
-          h('div', {
-            style: {
-              marginTop: '20px',
-            },
-          }, [
+          h('div', [
             h('button', {
               style: {
                 alignSelf: 'center',
@@ -177,6 +173,24 @@ function currentConversionInformation (metamaskState, state) {
       defaultValue: currentCurrency,
     }, infuraCurrencies.map((currency) => {
       return h('option', {key: currency.quote.code, value: currency.quote.code}, `${currency.quote.code.toUpperCase()} - ${currency.quote.name}`)
+    })),
+  ])
+}
+
+function currentIdenticonGeneratorInformation (metamaskState, state) {
+  var currentIdenticonGenerator = metamaskState.currentIdenticonGenerator
+  return h('div', [
+    h('span', {style: { fontWeight: 'bold', paddingRight: '10px'}}, 'Identicon Generator'),
+    h('select#currentIdentionGenerator', {
+      onChange (event) {
+        event.preventDefault()
+        var element = document.getElementById('currentIdentionGenerator')
+        var newIdenticonGenerator = element.value
+        state.dispatch(actions.setCurrentIdenticonGenerator(newIdenticonGenerator))
+      },
+      defaultValue: currentIdenticonGenerator,
+    }, ['Metamask', 'Blockies'].map((generator) => {
+      return h('option', {key: generator, value: generator}, generator)
     })),
   ])
 }

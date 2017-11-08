@@ -21,6 +21,7 @@ function reduceMetamask (state, action) {
     addressBook: [],
     tokenExchangeRates: {},
     coinOptions: {},
+    currentIdenticonGenerator: 'Metamask',
   }, state.metamask)
 
   switch (action.type) {
@@ -132,6 +133,11 @@ function reduceMetamask (state, action) {
         currentCurrency: action.value.currentCurrency,
         conversionRate: action.value.conversionRate,
         conversionDate: action.value.conversionDate,
+      })
+
+    case actions.SET_CURRENT_IDENTICON_GENERATOR:
+      return extend(metamaskState, {
+        currentIdenticonGenerator: action.value,
       })
 
     case actions.PAIR_UPDATE:
