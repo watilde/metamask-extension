@@ -268,6 +268,7 @@ module.exports = class MetamaskController extends EventEmitter {
   //
 
   getState () {
+    log.debug('getState')
     const wallet = this.configManager.getWallet()
     const vault = this.keyringController.store.getState().vault
     const isInitialized = (!!wallet || !!vault)

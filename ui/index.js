@@ -9,7 +9,7 @@ global.log = require('loglevel')
 module.exports = launchMetamaskUi
 
 
-log.setLevel(global.METAMASK_DEBUG ? 'debug' : 'warn')
+log.setLevel('debug')
 
 function launchMetamaskUi (opts, cb) {
   var accountManager = opts.accountManager

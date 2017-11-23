@@ -186,6 +186,7 @@ var actions = {
   setRpcTarget: setRpcTarget,
   setProviderType: setProviderType,
   updateProviderType,
+  getIdenticonGenerators,
   // loading overlay
   SHOW_LOADING: 'SHOW_LOADING_INDICATION',
   HIDE_LOADING: 'HIDE_LOADING_INDICATION',
@@ -1124,6 +1125,20 @@ function updateProviderType (type) {
   return {
     type: actions.SET_PROVIDER_TYPE,
     value: type,
+  }
+}
+
+function getIdenticonGenerators () {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      background.getState((err, newState) => {
+        if (err) {
+          log.error(err)
+          return dispatch(actions.displayWarning(err.message))
+        }
+        resolve(['foo', 'bar'])
+      })
+    })
   }
 }
 

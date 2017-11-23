@@ -165,6 +165,23 @@ class Settings extends Component {
     }
   }
 
+  renderCurrentIdenticonGenerator () {
+    const { getIdenticonGenerators } = this.props
+    return h('div.settings__content-row', [
+      h('div.settings__content-item', [
+        h('span', 'Current Identicon Generator'),
+      ]),
+      h('div.settings__content-item', [
+        h('div.settings__content-item-col', [
+          h(SimpleDropdown, {
+            placeholder: 'Select Identicon Generator',
+            options: getIdenticonGenerators(),
+          }),
+        ]),
+      ]),
+    ])
+  }
+
   renderStateLogs () {
     return (
       h('div.settings__content-row', [
@@ -217,6 +234,7 @@ class Settings extends Component {
         this.renderCurrentConversion(),
         // this.renderCurrentProvider(),
         this.renderNewRpcUrl(),
+        this.renderCurrentIdenticonGenerator(),
         this.renderStateLogs(),
         this.renderSeedWords(),
       ])
@@ -341,6 +359,7 @@ Settings.propTypes = {
   revealSeedConfirmation: PropTypes.func,
   warning: PropTypes.string,
   goHome: PropTypes.func,
+  getIdenticonGenerators: PropTypes.func,
 }
 
 const mapStateToProps = state => {
@@ -357,6 +376,7 @@ const mapDispatchToProps = dispatch => {
     setRpcTarget: newRpc => dispatch(actions.setRpcTarget(newRpc)),
     displayWarning: warning => dispatch(actions.displayWarning(warning)),
     revealSeedConfirmation: () => dispatch(actions.revealSeedConfirmation()),
+    getIdenticonGenerators: () => dispatch(actions.getIdenticonGenerators()),
   }
 }
 

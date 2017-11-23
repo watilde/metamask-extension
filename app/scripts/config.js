@@ -19,4 +19,8 @@ module.exports = {
     4: 'Rinkeby',
     42: 'Kovan',
   },
+  identiconGenerators: [
+    'Metamask',
+    'Blockie'
+  ]
 }
